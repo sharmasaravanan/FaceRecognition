@@ -17,6 +17,7 @@
 #include <string>
 #include <iostream>
 #include "FaceDetector.h"
+#include "clmtacker.h"
 #ifndef BLACKBOX_H
 #define	BLACKBOX_H
 
@@ -30,13 +31,20 @@ public:
              std::string mean_image_filename,         
              bool useGPU = false);
     void setMode(int mode);
-    void BlackBox::drawProbabilities(cv::Mat& frame,ImageSample& faceSample);
-    void process(cv::Mat& frame);
+    void BlackBox::drawProbabilities(cv::Mat& frame,ImageSample& faceSample,std::string cel);
+    void process(cv::Mat& frame,std::string cel);
     void BlackBox::FaceCropping(cv::Mat& frame,std::string path);
     std::vector<std::string> class_names;
      ImageSample* faceSample;
+      std::ofstream out;
+     std::ofstream outfile;
      int count=0;
+      int wrong_count=0;
+      std::string writename;
+        float prob;
        int count1=0;
+       int copy_int=0;
+       int filter=0;
     ~BlackBox();
 private:
 
@@ -48,7 +56,9 @@ private:
     // Neural network classifier for eyes
     CAFFE_classifier* cc;
     // Eyes structure for feedeng to neural network
-   
+    algobucket *facecrop;
+    
+     
     // Eyes regions
     cv::RotatedRect faceRect;
     // 0 - normal
